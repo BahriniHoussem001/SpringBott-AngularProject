@@ -1,0 +1,50 @@
+<h1>Lignes de commande</h1>
+
+<p>Nombre : {{ lignes.length }}</p>
+
+<h2>{{ modeModification ? 'Modifier' : 'Ajouter' }}</h2>
+
+<form (ngSubmit)="modeModification ? modifier() : ajouter()">
+
+  <label>ID Commande:</label>
+  <input type="number" [(ngModel)]="nouvelleLigne.commande.id" name="commandeId" required>
+
+  <label>Produit:</label>
+  <input type="text" [(ngModel)]="nouvelleLigne.produit" name="produit" required>
+
+  <label>Quantité:</label>
+  <input type="number" [(ngModel)]="nouvelleLigne.quantite" name="quantite" required>
+
+  <label>Prix:</label>
+  <input type="number" [(ngModel)]="nouvelleLigne.prixUnitaire" name="prix" required>
+
+  <button type="submit">
+    {{ modeModification ? 'Update' : 'Ajouter' }}
+  </button>
+
+</form>
+
+<br>
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>ID Commande</th>
+    <th>Produit</th>
+    <th>Quantité</th>
+    <th>Prix</th>
+    <th>Action</th>
+  </tr>
+
+  <tr *ngFor="let l of lignes">
+    <td>{{ l.id }}</td>
+    <td>{{ l.commande.id }}</td>
+    <td>{{ l.produit }}</td>
+    <td>{{ l.quantite }}</td>
+    <td>{{ l.prixUnitaire }}</td>
+    <td>
+      <button (click)="charger(l)">Modifier</button>
+      <button (click)="supprimer(l.id!)">Supprimer</button>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,21 @@
+<h1>Comparaison des fournisseurs</h1>
+
+<input [(ngModel)]="produit" placeholder="Nom du produit">
+<button (click)="comparer()">Comparer</button>
+
+<table border="1" *ngIf="resultats.length > 0">
+  <thead>
+    <tr>
+      <th>Fournisseur</th>
+      <th>Quantité</th>
+      <th>Délai</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of resultats">
+      <td>{{ r.fournisseur.nom }}</td>
+      <td>{{ r.quantite }}</td>
+      <td>{{ r.delaiLivraison }}</td>
+    </tr>
+  </tbody>
+</table>

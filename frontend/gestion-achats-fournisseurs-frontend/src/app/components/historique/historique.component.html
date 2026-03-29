@@ -1,0 +1,50 @@
+<h1>Historique des achats</h1>
+
+<p>Nombre : {{ historiques.length }}</p>
+
+<h2>{{ modeModification ? 'Modifier' : 'Ajouter' }}</h2>
+
+<form (ngSubmit)="modeModification ? modifier() : ajouter()">
+
+  <label>ID Fournisseur:</label>
+  <input type="number" [(ngModel)]="nouveau.fournisseur.id" name="fournisseurId" required>
+
+  <label>Produit:</label>
+  <input type="text" [(ngModel)]="nouveau.produit" name="produit" required>
+
+  <label>Quantité:</label>
+  <input type="number" [(ngModel)]="nouveau.quantite" name="quantite" required>
+
+  <label>Délai livraison:</label>
+  <input type="number" [(ngModel)]="nouveau.delaiLivraison" name="delai" required>
+
+  <button type="submit">
+    {{ modeModification ? 'Update' : 'Ajouter' }}
+  </button>
+
+</form>
+
+<br>
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>ID Fournisseur</th>
+    <th>Produit</th>
+    <th>Quantité</th>
+    <th>Délai</th>
+    <th>Action</th>
+  </tr>
+
+  <tr *ngFor="let h of historiques">
+    <td>{{ h.id }}</td>
+    <td>{{ h.fournisseur.id }}</td>
+    <td>{{ h.produit }}</td>
+    <td>{{ h.quantite }}</td>
+    <td>{{ h.delaiLivraison }}</td>
+    <td>
+      <button (click)="charger(h)">Modifier</button>
+      <button (click)="supprimer(h.id!)">Supprimer</button>
+    </td>
+  </tr>
+</table>

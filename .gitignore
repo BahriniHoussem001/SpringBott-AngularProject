@@ -1,0 +1,28 @@
+# ======================
+# SPRING BOOT (backend)
+# ======================
+backend/**/target/
+backend/**/build/
+backend/.gradle/
+backend/*.log
+
+# ======================
+# ANGULAR (frontend)
+# ======================
+frontend/**/node_modules/
+frontend/**/dist/
+frontend/**/.angular/
+
+# ======================
+# IDE / OS
+# ======================
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# ======================
+# Logs
+# ======================
+*.log

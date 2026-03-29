@@ -1,0 +1,63 @@
+<h1>Liste des fournisseurs</h1>
+
+<p>Nombre de fournisseurs : {{ fournisseurs.length }}</p>
+
+<h2>{{ modeModification ? 'Modifier un fournisseur' : 'Ajouter un fournisseur' }}</h2>
+
+<form (ngSubmit)="modeModification ? modifierFournisseur() : ajouterFournisseur()">
+  <div>
+    <label>Nom :</label>
+    <input type="text" [(ngModel)]="nouveauFournisseur.nom" name="nom" required>
+  </div>
+
+  <div>
+    <label>Contact :</label>
+    <input type="text" [(ngModel)]="nouveauFournisseur.contact" name="contact" required>
+  </div>
+
+  <div>
+    <label>Qualité de service :</label>
+    <input type="text" [(ngModel)]="nouveauFournisseur.qualiteService" name="qualiteService" required>
+  </div>
+
+  <div>
+    <label>Note :</label>
+    <input type="number" [(ngModel)]="nouveauFournisseur.note" name="note" required>
+  </div>
+
+  <button type="submit">
+    {{ modeModification ? 'Mettre à jour' : 'Ajouter' }}
+  </button>
+
+  <button type="button" *ngIf="modeModification" (click)="reinitialiserFormulaire()">
+    Annuler
+  </button>
+</form>
+
+<br>
+
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Contact</th>
+      <th>Qualité de service</th>
+      <th>Note</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let fournisseur of fournisseurs">
+      <td>{{ fournisseur.id }}</td>
+      <td>{{ fournisseur.nom }}</td>
+      <td>{{ fournisseur.contact }}</td>
+      <td>{{ fournisseur.qualiteService }}</td>
+      <td>{{ fournisseur.note }}</td>
+      <td>
+        <button (click)="chargerFournisseurPourModification(fournisseur)">Modifier</button>
+        <button (click)="supprimerFournisseur(fournisseur.id!)">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

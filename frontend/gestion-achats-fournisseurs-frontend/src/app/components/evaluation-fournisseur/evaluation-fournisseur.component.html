@@ -1,0 +1,26 @@
+<h1>Évaluation des fournisseurs</h1>
+
+<p>Nombre : {{ evaluations.length }}</p>
+
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Note</th>
+      <th>Qualité de service</th>
+      <th>Délai moyen de livraison</th>
+      <th>Efficacité</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let e of evaluations">
+      <td>{{ e.id }}</td>
+      <td>{{ e.nom }}</td>
+      <td>{{ e.note }}</td>
+      <td>{{ e.qualiteService }}</td>
+      <td>{{ e.delaiMoyenLivraison }}</td>
+      <td>{{ e.efficacite }}</td>
+    </tr>
+  </tbody>
+</table>

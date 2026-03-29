@@ -1,0 +1,67 @@
+<h1>Liste des commandes</h1>
+
+<p>Nombre de commandes : {{ commandes.length }}</p>
+
+<h2>{{ modeModification ? 'Modifier une commande' : 'Ajouter une commande' }}</h2>
+
+<form (ngSubmit)="modeModification ? modifierCommande() : ajouterCommande()">
+  <div>
+    <label>ID Fournisseur :</label>
+    <select [(ngModel)]="nouvelleCommande.fournisseur.id" name="fournisseurId" required>
+  <option *ngFor="let f of fournisseurs" [value]="f.id">
+    {{ f.nom }}
+  </option>
+</select>
+  </div>
+
+  <div>
+    <label>Date :</label>
+    <input type="date" [(ngModel)]="nouvelleCommande.date" name="date" required>
+  </div>
+
+  <div>
+    <label>Statut :</label>
+    <input type="text" [(ngModel)]="nouvelleCommande.statut" name="statut" required>
+  </div>
+
+  <div>
+    <label>Montant :</label>
+    <input type="number" [(ngModel)]="nouvelleCommande.montant" name="montant" required>
+  </div>
+
+  <button type="submit">
+    {{ modeModification ? 'Mettre à jour' : 'Ajouter' }}
+  </button>
+
+  <button type="button" *ngIf="modeModification" (click)="reinitialiserFormulaire()">
+    Annuler
+  </button>
+</form>
+
+<br>
+
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Fournisseur</th>
+      <th>Date</th>
+      <th>Statut</th>
+      <th>Montant</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let commande of commandes">
+      <td>{{ commande.id }}</td>
+      <td>{{ commande.fournisseur?.nom }}</td>
+      <td>{{ commande.date }}</td>
+      <td>{{ commande.statut }}</td>
+      <td>{{ commande.montant }}</td>
+      <td>
+        <button (click)="chargerCommandePourModification(commande)">Modifier</button>
+        <button (click)="supprimerCommande(commande.id!)">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
