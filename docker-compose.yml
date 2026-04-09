@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gestion_achats_fournisseurs
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend/gestion-achats-fournisseurs
+    container_name: backend_container
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "9096:9096"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend/gestion-achats-fournisseurs-frontend
+    container_name: frontend_container
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:
