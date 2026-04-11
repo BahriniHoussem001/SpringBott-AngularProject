@@ -9,7 +9,7 @@ import { EvaluationFournisseur } from '../models/evaluation-fournisseur';
 })
 export class FournisseurService {
 
-  private apiUrl = 'http://localhost:9096/api/fournisseurs';
+  private apiUrl = 'http://35.224.124.154:9096/api/fournisseurs';
 
   constructor(private http: HttpClient) { }
 

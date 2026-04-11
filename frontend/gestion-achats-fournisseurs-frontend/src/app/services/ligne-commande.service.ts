@@ -8,7 +8,7 @@ import { LigneCommande } from '../models/ligne-commande';
 })
 export class LigneCommandeService {
 
-  private apiUrl = 'http://localhost:9096/api/lignes-commandes';
+  private apiUrl = 'http://35.224.124.154:9096/api/lignes-commandes';
 
   constructor(private http: HttpClient) {}
 
