@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Fournisseur } from '../models/fournisseur';
 import { EvaluationFournisseur } from '../models/evaluation-fournisseur';
+import { environment } from 'src/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FournisseurService {
 
-  private apiUrl = 'http://136.112.59.167:9096/api/fournisseurs';
+  private apiUrl = `${environment.apiUrl}/fournisseurs`;
 
   constructor(private http: HttpClient) { }
 

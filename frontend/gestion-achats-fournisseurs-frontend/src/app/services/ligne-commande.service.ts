@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LigneCommande } from '../models/ligne-commande';
-
+import { environment } from 'src/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class LigneCommandeService {
 
-  private apiUrl = 'http://136.112.59.167:9096/api/lignes-commandes';
+  private apiUrl = `${environment.apiUrl}/lignes-commandes`;
 
   constructor(private http: HttpClient) {}
 
