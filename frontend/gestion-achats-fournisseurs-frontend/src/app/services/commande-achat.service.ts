@@ -8,7 +8,7 @@ import { CommandeAchat } from '../models/commande-achat';
 })
 export class CommandeAchatService {
 
-  private apiUrl = 'http://35.224.124.154:9096/api/commandes';
+  private apiUrl = 'http://136.112.59.167:9096/api/commandes';
 
   constructor(private http: HttpClient) { }
 
