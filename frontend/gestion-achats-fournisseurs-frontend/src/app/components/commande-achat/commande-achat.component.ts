@@ -37,12 +37,21 @@ export class CommandeAchatComponent implements OnInit {
     });
   }
 
-  ajouterCommande(): void {
-    this.commandeAchatService.createCommande(this.nouvelleCommande).subscribe(() => {
-      this.getCommandes();
-      this.reinitialiserFormulaire();
-    });
-  }
+ ajouterCommande(): void {
+  const commandeToSend = {
+    fournisseur: {
+      id: this.nouvelleCommande.fournisseur.id
+    },
+    date: this.nouvelleCommande.date,
+    statut: this.nouvelleCommande.statut,
+    montant: this.nouvelleCommande.montant
+  };
+
+  this.commandeAchatService.createCommande(commandeToSend as CommandeAchat).subscribe(() => {
+    this.getCommandes();
+    this.reinitialiserFormulaire();
+  });
+}
 
   supprimerCommande(id: number): void {
     this.commandeAchatService.deleteCommande(id).subscribe(() => {
