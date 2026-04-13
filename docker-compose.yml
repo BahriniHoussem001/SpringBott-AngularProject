@@ -14,6 +14,12 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
 
   backend:
     build:
@@ -22,6 +28,11 @@ services:
     restart: always
     depends_on:
       - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gestion_achats_fournisseurs?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SERVER_PORT: 9096
     ports:
       - "9096:9096"
     networks:
@@ -44,3 +55,4 @@ volumes:
 
 networks:
   app-network:
+    driver: bridge
