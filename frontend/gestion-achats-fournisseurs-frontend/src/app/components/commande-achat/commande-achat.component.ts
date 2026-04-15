@@ -76,7 +76,7 @@ export class CommandeAchatComponent implements OnInit {
 
   const commandeToSend = {
     fournisseur: {
-      id: this.selectedFournisseurId
+      id: Number(this.selectedFournisseurId)
     },
     date: this.nouvelleCommande.date,
     statut: this.nouvelleCommande.statut.trim(),
