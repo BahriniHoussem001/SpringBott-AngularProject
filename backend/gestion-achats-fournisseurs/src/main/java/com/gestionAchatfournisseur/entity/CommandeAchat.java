@@ -3,6 +3,9 @@ package com.gestionAchatfournisseur.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -18,6 +21,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class CommandeAchat {
 	  @Id
 	  @GeneratedValue(strategy = GenerationType.IDENTITY)
