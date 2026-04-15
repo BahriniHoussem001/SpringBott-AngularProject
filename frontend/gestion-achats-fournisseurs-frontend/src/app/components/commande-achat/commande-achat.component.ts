@@ -63,39 +63,38 @@ export class CommandeAchatComponent implements OnInit {
     });
   }
 
-  ajouterCommande(): void {
-    if (
-      !this.selectedFournisseurId ||
-      !this.nouvelleCommande.date ||
-      !this.nouvelleCommande.statut ||
-      Number(this.nouvelleCommande.montant) <= 0
-    ) {
-      alert('Veuillez remplir correctement tous les champs.');
-      return;
-    }
-
-    const commandeToSend = {
-      fournisseur: {
-        id: Number(this.selectedFournisseurId)
-      },
-      date: this.nouvelleCommande.date,
-      statut: this.nouvelleCommande.statut.trim(),
-      montant: Number(this.nouvelleCommande.montant)
-    };
-
-    console.log('Payload JSON commande :', JSON.stringify(commandeToSend, null, 2));
-
-    this.commandeAchatService.createCommande(commandeToSend as CommandeAchat).subscribe({
-      next: () => {
-        this.getCommandes();
-        this.reinitialiserFormulaire();
-      },
-      error: (err) => {
-        console.error('Erreur lors de l’ajout de la commande :', err);
-      }
-    });
+ ajouterCommande(): void {
+  if (
+    !this.selectedFournisseurId ||
+    !this.nouvelleCommande.date ||
+    !this.nouvelleCommande.statut ||
+    Number(this.nouvelleCommande.montant) <= 0
+  ) {
+    alert('Veuillez remplir correctement tous les champs.');
+    return;
   }
 
+  const commandeToSend = {
+    fournisseur: {
+      id: this.selectedFournisseurId
+    },
+    date: this.nouvelleCommande.date,
+    statut: this.nouvelleCommande.statut.trim(),
+    montant: Number(this.nouvelleCommande.montant)
+  };
+
+  console.log('Payload FINAL :', JSON.stringify(commandeToSend, null, 2));
+
+  this.commandeAchatService.createCommande(commandeToSend as CommandeAchat).subscribe({
+    next: () => {
+      this.getCommandes();
+      this.reinitialiserFormulaire();
+    },
+    error: (err) => {
+      console.error('Erreur backend :', err);
+    }
+  });
+}
   supprimerCommande(id: number): void {
     this.commandeAchatService.deleteCommande(id).subscribe({
       next: () => {

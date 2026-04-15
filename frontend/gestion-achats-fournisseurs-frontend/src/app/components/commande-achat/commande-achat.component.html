@@ -7,15 +7,11 @@
 <form>
   <div>
     <label for="fournisseurId">ID Fournisseur :</label>
-    <select
-      id="fournisseurId"
-      [(ngModel)]="selectedFournisseurId"
-      name="fournisseurId"
-      required>
-      <option *ngFor="let f of fournisseurs" [value]="f.id">
-        {{ f.nom }}
-      </option>
-    </select>
+    <select [(ngModel)]="selectedFournisseurId" name="fournisseurId" required>
+  <option *ngFor="let f of fournisseurs" [value]="f.id">
+    {{ f.nom }}
+  </option>
+</select>
   </div>
 
   <div>
