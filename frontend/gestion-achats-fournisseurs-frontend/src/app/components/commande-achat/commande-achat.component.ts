@@ -14,6 +14,8 @@ export class CommandeAchatComponent implements OnInit {
   commandes: CommandeAchat[] = [];
   fournisseurs: Fournisseur[] = [];
 
+  selectedFournisseurId: number = 1;
+
   nouvelleCommande: CommandeAchat = {
     fournisseur: { id: 1 },
     date: '',
@@ -50,8 +52,9 @@ export class CommandeAchatComponent implements OnInit {
       next: (data) => {
         this.fournisseurs = data;
 
-        if (this.fournisseurs.length > 0 && !this.nouvelleCommande.fournisseur?.id) {
-          this.nouvelleCommande.fournisseur = { id: this.fournisseurs[0].id! };
+        if (this.fournisseurs.length > 0) {
+          this.selectedFournisseurId = this.fournisseurs[0].id!;
+          this.nouvelleCommande.fournisseur = { id: this.selectedFournisseurId };
         }
       },
       error: (err) => {
@@ -62,7 +65,7 @@ export class CommandeAchatComponent implements OnInit {
 
   ajouterCommande(): void {
     if (
-      !this.nouvelleCommande.fournisseur?.id ||
+      !this.selectedFournisseurId ||
       !this.nouvelleCommande.date ||
       !this.nouvelleCommande.statut ||
       Number(this.nouvelleCommande.montant) <= 0
@@ -73,14 +76,14 @@ export class CommandeAchatComponent implements OnInit {
 
     const commandeToSend = {
       fournisseur: {
-        id: Number(this.nouvelleCommande.fournisseur.id)
+        id: Number(this.selectedFournisseurId)
       },
       date: this.nouvelleCommande.date,
       statut: this.nouvelleCommande.statut.trim(),
       montant: Number(this.nouvelleCommande.montant)
     };
 
-    console.log('Payload envoyé pour ajout commande :', commandeToSend);
+    console.log('Payload JSON commande :', JSON.stringify(commandeToSend, null, 2));
 
     this.commandeAchatService.createCommande(commandeToSend as CommandeAchat).subscribe({
       next: () => {
@@ -108,8 +111,10 @@ export class CommandeAchatComponent implements OnInit {
     this.modeModification = true;
     this.idCommandeEnCours = commande.id!;
 
+    this.selectedFournisseurId = commande.fournisseur?.id ?? 1;
+
     this.nouvelleCommande = {
-      fournisseur: { id: commande.fournisseur.id },
+      fournisseur: { id: commande.fournisseur?.id ?? 1 },
       date: commande.date,
       statut: commande.statut,
       montant: commande.montant
@@ -122,7 +127,7 @@ export class CommandeAchatComponent implements OnInit {
     }
 
     if (
-      !this.nouvelleCommande.fournisseur?.id ||
+      !this.selectedFournisseurId ||
       !this.nouvelleCommande.date ||
       !this.nouvelleCommande.statut ||
       Number(this.nouvelleCommande.montant) <= 0
@@ -133,14 +138,14 @@ export class CommandeAchatComponent implements OnInit {
 
     const commandeToSend = {
       fournisseur: {
-        id: Number(this.nouvelleCommande.fournisseur.id)
+        id: Number(this.selectedFournisseurId)
       },
       date: this.nouvelleCommande.date,
       statut: this.nouvelleCommande.statut.trim(),
       montant: Number(this.nouvelleCommande.montant)
     };
 
-    console.log('Payload envoyé pour modification commande :', commandeToSend);
+    console.log('Payload JSON modification commande :', JSON.stringify(commandeToSend, null, 2));
 
     this.commandeAchatService.updateCommande(this.idCommandeEnCours, commandeToSend as CommandeAchat).subscribe({
       next: () => {
@@ -154,8 +159,10 @@ export class CommandeAchatComponent implements OnInit {
   }
 
   reinitialiserFormulaire(): void {
+    this.selectedFournisseurId = this.fournisseurs.length > 0 ? this.fournisseurs[0].id! : 1;
+
     this.nouvelleCommande = {
-      fournisseur: { id: this.fournisseurs.length > 0 ? this.fournisseurs[0].id! : 1 },
+      fournisseur: { id: this.selectedFournisseurId },
       date: '',
       statut: '',
       montant: 0

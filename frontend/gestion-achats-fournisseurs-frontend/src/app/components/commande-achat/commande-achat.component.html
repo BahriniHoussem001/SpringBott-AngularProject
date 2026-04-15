@@ -9,10 +9,10 @@
     <label for="fournisseurId">ID Fournisseur :</label>
     <select
       id="fournisseurId"
-      [(ngModel)]="nouvelleCommande.fournisseur.id"
+      [(ngModel)]="selectedFournisseurId"
       name="fournisseurId"
       required>
-      <option *ngFor="let f of fournisseurs" [ngValue]="f.id">
+      <option *ngFor="let f of fournisseurs" [value]="f.id">
         {{ f.nom }}
       </option>
     </select>
