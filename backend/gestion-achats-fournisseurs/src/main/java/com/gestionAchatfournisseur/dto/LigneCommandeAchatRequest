@@ -1,5 +1,5 @@
 package com.gestionAchatfournisseur.dto;
-package com.gestionAchatfournisseur.dto;
+
 
 public class LigneCommandeAchatRequest {
 
