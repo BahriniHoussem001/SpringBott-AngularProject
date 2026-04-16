@@ -16,8 +16,7 @@ export class CommandeAchatComponent implements OnInit {
 
   selectedFournisseurId: number = 1;
 
-  nouvelleCommande: CommandeAchat = {
-    fournisseur: { id: 1 },
+  nouvelleCommande = {
     date: '',
     statut: '',
     montant: 0
@@ -54,7 +53,6 @@ export class CommandeAchatComponent implements OnInit {
 
         if (this.fournisseurs.length > 0) {
           this.selectedFournisseurId = this.fournisseurs[0].id!;
-          this.nouvelleCommande.fournisseur = { id: this.selectedFournisseurId };
         }
       },
       error: (err) => {
@@ -63,38 +61,37 @@ export class CommandeAchatComponent implements OnInit {
     });
   }
 
- ajouterCommande(): void {
-  if (
-    !this.selectedFournisseurId ||
-    !this.nouvelleCommande.date ||
-    !this.nouvelleCommande.statut ||
-    Number(this.nouvelleCommande.montant) <= 0
-  ) {
-    alert('Veuillez remplir correctement tous les champs.');
-    return;
+  ajouterCommande(): void {
+    if (
+      !this.selectedFournisseurId ||
+      !this.nouvelleCommande.date ||
+      !this.nouvelleCommande.statut ||
+      Number(this.nouvelleCommande.montant) <= 0
+    ) {
+      alert('Veuillez remplir correctement tous les champs.');
+      return;
+    }
+
+    const commandeToSend = {
+      fournisseurId: Number(this.selectedFournisseurId),
+      date: this.nouvelleCommande.date,
+      statut: this.nouvelleCommande.statut.trim(),
+      montant: Number(this.nouvelleCommande.montant)
+    };
+
+    console.log('Payload JSON commande :', JSON.stringify(commandeToSend, null, 2));
+
+    this.commandeAchatService.createCommande(commandeToSend as any).subscribe({
+      next: () => {
+        this.getCommandes();
+        this.reinitialiserFormulaire();
+      },
+      error: (err) => {
+        console.error('Erreur lors de l’ajout de la commande :', err);
+      }
+    });
   }
 
-  const commandeToSend = {
-    fournisseur: {
-      id: Number(this.selectedFournisseurId)
-    },
-    date: this.nouvelleCommande.date,
-    statut: this.nouvelleCommande.statut.trim(),
-    montant: Number(this.nouvelleCommande.montant)
-  };
-
-  console.log('Payload FINAL :', JSON.stringify(commandeToSend, null, 2));
-
-  this.commandeAchatService.createCommande(commandeToSend as CommandeAchat).subscribe({
-    next: () => {
-      this.getCommandes();
-      this.reinitialiserFormulaire();
-    },
-    error: (err) => {
-      console.error('Erreur backend :', err);
-    }
-  });
-}
   supprimerCommande(id: number): void {
     this.commandeAchatService.deleteCommande(id).subscribe({
       next: () => {
@@ -113,7 +110,6 @@ export class CommandeAchatComponent implements OnInit {
     this.selectedFournisseurId = commande.fournisseur?.id ?? 1;
 
     this.nouvelleCommande = {
-      fournisseur: { id: commande.fournisseur?.id ?? 1 },
       date: commande.date,
       statut: commande.statut,
       montant: commande.montant
@@ -136,9 +132,7 @@ export class CommandeAchatComponent implements OnInit {
     }
 
     const commandeToSend = {
-      fournisseur: {
-        id: Number(this.selectedFournisseurId)
-      },
+      fournisseurId: Number(this.selectedFournisseurId),
       date: this.nouvelleCommande.date,
       statut: this.nouvelleCommande.statut.trim(),
       montant: Number(this.nouvelleCommande.montant)
@@ -146,7 +140,7 @@ export class CommandeAchatComponent implements OnInit {
 
     console.log('Payload JSON modification commande :', JSON.stringify(commandeToSend, null, 2));
 
-    this.commandeAchatService.updateCommande(this.idCommandeEnCours, commandeToSend as CommandeAchat).subscribe({
+    this.commandeAchatService.updateCommande(this.idCommandeEnCours, commandeToSend as any).subscribe({
       next: () => {
         this.getCommandes();
         this.reinitialiserFormulaire();
@@ -161,7 +155,6 @@ export class CommandeAchatComponent implements OnInit {
     this.selectedFournisseurId = this.fournisseurs.length > 0 ? this.fournisseurs[0].id! : 1;
 
     this.nouvelleCommande = {
-      fournisseur: { id: this.selectedFournisseurId },
       date: '',
       statut: '',
       montant: 0
