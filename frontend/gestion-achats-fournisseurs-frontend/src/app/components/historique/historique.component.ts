@@ -34,7 +34,6 @@ export class HistoriqueComponent implements OnInit {
   }
 
   ajouter(): void {
-
   const payload = {
     fournisseurId: Number(this.nouveau.fournisseur.id),
     produit: this.nouveau.produit,
@@ -42,7 +41,7 @@ export class HistoriqueComponent implements OnInit {
     delaiLivraison: Number(this.nouveau.delaiLivraison)
   };
 
-  console.log("Payload historique :", payload);
+  console.log('Payload historique :', JSON.stringify(payload, null, 2));
 
   this.service.create(payload as any).subscribe(() => {
     this.getAll();
@@ -68,10 +67,8 @@ export class HistoriqueComponent implements OnInit {
     };
   }
 
- modifier(): void {
-
+modifier(): void {
   if (this.idEnCours !== null) {
-
     const payload = {
       fournisseurId: Number(this.nouveau.fournisseur.id),
       produit: this.nouveau.produit,

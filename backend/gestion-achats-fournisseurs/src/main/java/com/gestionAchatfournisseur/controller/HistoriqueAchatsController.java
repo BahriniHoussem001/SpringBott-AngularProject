@@ -45,7 +45,6 @@ public Optional<HistoriqueAchats> getHistoriqueById(@PathVariable("id") Long id)
 
 @PostMapping
 public HistoriqueAchats createHistorique(@RequestBody HistoriqueAchatsRequest request) {
-
     Fournisseur f = new Fournisseur();
     f.setId(request.getFournisseurId());
 
@@ -61,11 +60,11 @@ public HistoriqueAchats createHistorique(@RequestBody HistoriqueAchatsRequest re
 @PutMapping("/{id}")
 public HistoriqueAchats updateHistorique(@PathVariable Long id,
                                          @RequestBody HistoriqueAchatsRequest request) {
-
     Fournisseur f = new Fournisseur();
     f.setId(request.getFournisseurId());
 
     HistoriqueAchats h = new HistoriqueAchats();
+    h.setId(id);
     h.setFournisseur(f);
     h.setProduit(request.getProduit());
     h.setQuantite(request.getQuantite());
@@ -73,7 +72,6 @@ public HistoriqueAchats updateHistorique(@PathVariable Long id,
 
     return historiqueAchatsService.updateHistorique(id, h);
 }
-
 @DeleteMapping("/{id}")
 public void deleteHistorique(@PathVariable("id") Long id) {
     historiqueAchatsService.deleteHistorique(id);

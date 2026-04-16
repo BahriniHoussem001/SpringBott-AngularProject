@@ -16,7 +16,7 @@ import jakarta.validation.constraints.NotNull;
 public class HistoriqueAchats {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	 @ManyToOne
 	    @JoinColumn(name = "fournisseur_id")
 	    @NotNull(message = "Le fournisseur est obligatoire")
@@ -46,12 +46,12 @@ public class HistoriqueAchats {
 			this.delaiLivraison = delaiLivraison;
 		}
 
-		public long getId() {
-			return id;
+		public Long getId() {
+    		return id;
 		}
 
-		public void setId(long id) {
-			this.id = id;
+		public void setId(Long id) {
+    		this.id = id;
 		}
 
 		public Fournisseur getFournisseur() {
