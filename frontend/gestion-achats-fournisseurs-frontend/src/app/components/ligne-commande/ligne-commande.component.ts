@@ -54,9 +54,14 @@ export class LigneCommandeComponent implements OnInit {
 
     console.log('Payload ligne commande :', JSON.stringify(ligneToSend, null, 2));
 
-    this.service.create(ligneToSend as any).subscribe(() => {
-      this.getAll();
-      this.reset();
+    this.service.create(ligneToSend as any).subscribe({
+      next: () => {
+        this.getAll();
+        this.reset();
+      },
+      error: (err) => {
+        console.error('Erreur ligne commande :', err);
+      }
     });
   }
 
@@ -90,9 +95,14 @@ export class LigneCommandeComponent implements OnInit {
 
       console.log('Payload modification ligne commande :', JSON.stringify(ligneToSend, null, 2));
 
-      this.service.update(this.idEnCours, ligneToSend as any).subscribe(() => {
-        this.getAll();
-        this.reset();
+      this.service.update(this.idEnCours, ligneToSend as any).subscribe({
+        next: () => {
+          this.getAll();
+          this.reset();
+        },
+        error: (err) => {
+          console.error('Erreur modification ligne commande :', err);
+        }
       });
     }
   }
