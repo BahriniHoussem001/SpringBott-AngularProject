@@ -3,8 +3,7 @@ package com.gestionAchatfournisseur.entity;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,12 +20,12 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
 public class CommandeAchat {
 	  @Id
 	  @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-	  private long id ;
+	  private Long id;
 	  @ManyToOne
 	    @JoinColumn(name = "fournisseur_id")
 	    @NotNull(message = "Le fournisseur est obligatoire")
@@ -59,12 +58,12 @@ public class CommandeAchat {
 			this.montant = montant;
 		}
 
-		public long getId() {
-			return id;
+		public Long getId() {
+    		return id;
 		}
 
-		public void setId(long id) {
-			this.id = id;
+		public void setId(Long id) {
+    	this.id = id;
 		}
 
 		public Fournisseur getFournisseur() {
