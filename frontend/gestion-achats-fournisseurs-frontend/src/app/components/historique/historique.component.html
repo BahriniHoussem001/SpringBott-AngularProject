@@ -4,24 +4,30 @@
 
 <h2>{{ modeModification ? 'Modifier' : 'Ajouter' }}</h2>
 
-<form (ngSubmit)="modeModification ? modifier() : ajouter()">
-
+<form>
   <label>ID Fournisseur:</label>
-  <input type="number" [(ngModel)]="nouveau.fournisseur.id" name="fournisseurId" required>
+  <input type="number" [(ngModel)]="selectedFournisseurId" name="fournisseurId" required>
 
   <label>Produit:</label>
   <input type="text" [(ngModel)]="nouveau.produit" name="produit" required>
 
   <label>Quantité:</label>
-  <input type="number" [(ngModel)]="nouveau.quantite" name="quantite" required>
+  <input type="number" [(ngModel)]="nouveau.quantite" name="quantite" required min="1">
 
   <label>Délai livraison:</label>
-  <input type="number" [(ngModel)]="nouveau.delaiLivraison" name="delai" required>
+  <input type="number" [(ngModel)]="nouveau.delaiLivraison" name="delai" required min="0">
 
-  <button type="submit">
-    {{ modeModification ? 'Update' : 'Ajouter' }}
+  <button type="button" *ngIf="!modeModification" (click)="ajouter()">
+    Ajouter
   </button>
 
+  <button type="button" *ngIf="modeModification" (click)="modifier()">
+    Update
+  </button>
+
+  <button type="button" *ngIf="modeModification" (click)="reset()">
+    Annuler
+  </button>
 </form>
 
 <br>
@@ -38,13 +44,13 @@
 
   <tr *ngFor="let h of historiques">
     <td>{{ h.id }}</td>
-    <td>{{ h.fournisseur.id }}</td>
+    <td>{{ h.fournisseur?.id }}</td>
     <td>{{ h.produit }}</td>
     <td>{{ h.quantite }}</td>
     <td>{{ h.delaiLivraison }}</td>
     <td>
-      <button (click)="charger(h)">Modifier</button>
-      <button (click)="supprimer(h.id!)">Supprimer</button>
+      <button type="button" (click)="charger(h)">Modifier</button>
+      <button type="button" (click)="supprimer(h.id!)">Supprimer</button>
     </td>
   </tr>
 </table>
