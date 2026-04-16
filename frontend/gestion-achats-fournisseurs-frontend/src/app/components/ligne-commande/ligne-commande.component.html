@@ -4,24 +4,30 @@
 
 <h2>{{ modeModification ? 'Modifier' : 'Ajouter' }}</h2>
 
-<form (ngSubmit)="modeModification ? modifier() : ajouter()">
-
+<form>
   <label>ID Commande:</label>
-  <input type="number" [(ngModel)]="nouvelleLigne.commande.id" name="commandeId" required>
+  <input type="number" [(ngModel)]="selectedCommandeId" name="commandeId" required>
 
   <label>Produit:</label>
   <input type="text" [(ngModel)]="nouvelleLigne.produit" name="produit" required>
 
   <label>Quantité:</label>
-  <input type="number" [(ngModel)]="nouvelleLigne.quantite" name="quantite" required>
+  <input type="number" [(ngModel)]="nouvelleLigne.quantite" name="quantite" required min="1">
 
   <label>Prix:</label>
-  <input type="number" [(ngModel)]="nouvelleLigne.prixUnitaire" name="prix" required>
+  <input type="number" [(ngModel)]="nouvelleLigne.prixUnitaire" name="prix" required min="1" step="0.01">
 
-  <button type="submit">
-    {{ modeModification ? 'Update' : 'Ajouter' }}
+  <button type="button" *ngIf="!modeModification" (click)="ajouter()">
+    Ajouter
   </button>
 
+  <button type="button" *ngIf="modeModification" (click)="modifier()">
+    Update
+  </button>
+
+  <button type="button" *ngIf="modeModification" (click)="reset()">
+    Annuler
+  </button>
 </form>
 
 <br>
@@ -38,13 +44,13 @@
 
   <tr *ngFor="let l of lignes">
     <td>{{ l.id }}</td>
-    <td>{{ l.commande.id }}</td>
+    <td>{{ l.commande?.id }}</td>
     <td>{{ l.produit }}</td>
     <td>{{ l.quantite }}</td>
     <td>{{ l.prixUnitaire }}</td>
     <td>
-      <button (click)="charger(l)">Modifier</button>
-      <button (click)="supprimer(l.id!)">Supprimer</button>
+      <button type="button" (click)="charger(l)">Modifier</button>
+      <button type="button" (click)="supprimer(l.id!)">Supprimer</button>
     </td>
   </tr>
 </table>

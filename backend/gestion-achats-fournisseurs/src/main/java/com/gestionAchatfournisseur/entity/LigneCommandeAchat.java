@@ -15,7 +15,7 @@ import jakarta.validation.constraints.NotNull;
 public class LigneCommandeAchat {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	 @ManyToOne
 	    @JoinColumn(name = "commande_id")
 	    @NotNull(message = "La commande est obligatoire")
@@ -45,12 +45,12 @@ public class LigneCommandeAchat {
 			this.prixUnitaire = prixUnitaire;
 		}
 
-		public long getId() {
-			return id;
+		public Long getId() {
+    		return id;
 		}
 
-		public void setId(long id) {
-			this.id = id;
+		public void setId(Long id) {
+    		this.id = id;
 		}
 
 		public CommandeAchat getCommande() {

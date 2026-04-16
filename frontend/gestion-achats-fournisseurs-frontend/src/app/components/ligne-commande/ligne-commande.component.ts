@@ -11,8 +11,9 @@ export class LigneCommandeComponent implements OnInit {
 
   lignes: LigneCommande[] = [];
 
-  nouvelleLigne: LigneCommande = {
-    commande: { id: 1 },
+  selectedCommandeId: number = 1;
+
+  nouvelleLigne = {
     produit: '',
     quantite: 0,
     prixUnitaire: 0
@@ -34,7 +35,26 @@ export class LigneCommandeComponent implements OnInit {
   }
 
   ajouter(): void {
-    this.service.create(this.nouvelleLigne).subscribe(() => {
+    if (
+      !this.selectedCommandeId ||
+      !this.nouvelleLigne.produit ||
+      Number(this.nouvelleLigne.quantite) <= 0 ||
+      Number(this.nouvelleLigne.prixUnitaire) <= 0
+    ) {
+      alert('Veuillez remplir correctement tous les champs.');
+      return;
+    }
+
+    const ligneToSend = {
+      commandeId: Number(this.selectedCommandeId),
+      produit: this.nouvelleLigne.produit.trim(),
+      quantite: Number(this.nouvelleLigne.quantite),
+      prixUnitaire: Number(this.nouvelleLigne.prixUnitaire)
+    };
+
+    console.log('Payload ligne commande :', JSON.stringify(ligneToSend, null, 2));
+
+    this.service.create(ligneToSend as any).subscribe(() => {
       this.getAll();
       this.reset();
     });
@@ -50,8 +70,9 @@ export class LigneCommandeComponent implements OnInit {
     this.modeModification = true;
     this.idEnCours = ligne.id!;
 
+    this.selectedCommandeId = ligne.commande?.id ?? 1;
+
     this.nouvelleLigne = {
-      commande: { id: ligne.commande.id },
       produit: ligne.produit,
       quantite: ligne.quantite,
       prixUnitaire: ligne.prixUnitaire
@@ -60,7 +81,16 @@ export class LigneCommandeComponent implements OnInit {
 
   modifier(): void {
     if (this.idEnCours !== null) {
-      this.service.update(this.idEnCours, this.nouvelleLigne).subscribe(() => {
+      const ligneToSend = {
+        commandeId: Number(this.selectedCommandeId),
+        produit: this.nouvelleLigne.produit.trim(),
+        quantite: Number(this.nouvelleLigne.quantite),
+        prixUnitaire: Number(this.nouvelleLigne.prixUnitaire)
+      };
+
+      console.log('Payload modification ligne commande :', JSON.stringify(ligneToSend, null, 2));
+
+      this.service.update(this.idEnCours, ligneToSend as any).subscribe(() => {
         this.getAll();
         this.reset();
       });
@@ -68,8 +98,8 @@ export class LigneCommandeComponent implements OnInit {
   }
 
   reset(): void {
+    this.selectedCommandeId = 1;
     this.nouvelleLigne = {
-      commande: { id: 1 },
       produit: '',
       quantite: 0,
       prixUnitaire: 0
