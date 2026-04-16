@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gestionAchatfournisseur.entity.HistoriqueAchats;
 import com.gestionAchatfournisseur.service.HistoriqueAchatsService;
+import com.gestionAchatfournisseur.dto.HistoriqueAchatsRequest;
+import com.gestionAchatfournisseur.entity.Fournisseur;
 
 import jakarta.validation.Valid;
 @RestController
@@ -42,14 +44,34 @@ public Optional<HistoriqueAchats> getHistoriqueById(@PathVariable("id") Long id)
 }
 
 @PostMapping
-public HistoriqueAchats createHistorique(@Valid @RequestBody HistoriqueAchats historiqueAchats) {
-    return historiqueAchatsService.saveHistorique(historiqueAchats);
+public HistoriqueAchats createHistorique(@RequestBody HistoriqueAchatsRequest request) {
+
+    Fournisseur f = new Fournisseur();
+    f.setId(request.getFournisseurId());
+
+    HistoriqueAchats h = new HistoriqueAchats();
+    h.setFournisseur(f);
+    h.setProduit(request.getProduit());
+    h.setQuantite(request.getQuantite());
+    h.setDelaiLivraison(request.getDelaiLivraison());
+
+    return historiqueAchatsService.saveHistorique(h);
 }
 
 @PutMapping("/{id}")
-public HistoriqueAchats updateHistorique(@PathVariable("id") Long id,
-                                         @Valid @RequestBody HistoriqueAchats historiqueAchats) {
-    return historiqueAchatsService.updateHistorique(id, historiqueAchats);
+public HistoriqueAchats updateHistorique(@PathVariable Long id,
+                                         @RequestBody HistoriqueAchatsRequest request) {
+
+    Fournisseur f = new Fournisseur();
+    f.setId(request.getFournisseurId());
+
+    HistoriqueAchats h = new HistoriqueAchats();
+    h.setFournisseur(f);
+    h.setProduit(request.getProduit());
+    h.setQuantite(request.getQuantite());
+    h.setDelaiLivraison(request.getDelaiLivraison());
+
+    return historiqueAchatsService.updateHistorique(id, h);
 }
 
 @DeleteMapping("/{id}")

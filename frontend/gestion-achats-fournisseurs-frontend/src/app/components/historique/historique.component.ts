@@ -34,11 +34,21 @@ export class HistoriqueComponent implements OnInit {
   }
 
   ajouter(): void {
-    this.service.create(this.nouveau).subscribe(() => {
-      this.getAll();
-      this.reset();
-    });
-  }
+
+  const payload = {
+    fournisseurId: Number(this.nouveau.fournisseur.id),
+    produit: this.nouveau.produit,
+    quantite: Number(this.nouveau.quantite),
+    delaiLivraison: Number(this.nouveau.delaiLivraison)
+  };
+
+  console.log("Payload historique :", payload);
+
+  this.service.create(payload as any).subscribe(() => {
+    this.getAll();
+    this.reset();
+  });
+}
 
   supprimer(id: number): void {
     this.service.delete(id).subscribe(() => {
@@ -58,14 +68,23 @@ export class HistoriqueComponent implements OnInit {
     };
   }
 
-  modifier(): void {
-    if (this.idEnCours !== null) {
-      this.service.update(this.idEnCours, this.nouveau).subscribe(() => {
-        this.getAll();
-        this.reset();
-      });
-    }
+ modifier(): void {
+
+  if (this.idEnCours !== null) {
+
+    const payload = {
+      fournisseurId: Number(this.nouveau.fournisseur.id),
+      produit: this.nouveau.produit,
+      quantite: Number(this.nouveau.quantite),
+      delaiLivraison: Number(this.nouveau.delaiLivraison)
+    };
+
+    this.service.update(this.idEnCours, payload as any).subscribe(() => {
+      this.getAll();
+      this.reset();
+    });
   }
+}
 
   reset(): void {
     this.nouveau = {
