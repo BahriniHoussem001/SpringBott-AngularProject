@@ -3,51 +3,54 @@ package com.gestionAchatfournisseur.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.gestionAchatfournisseur.entity.HistoriqueAchats;
 import com.gestionAchatfournisseur.repo.HistoriqueAchatsRepository;
 
 @Service
 public class HistoriqueAchatsService {
-	  private final HistoriqueAchatsRepository historiqueAchatsRepository;
 
-	    public HistoriqueAchatsService(HistoriqueAchatsRepository historiqueAchatsRepository) {
-	        this.historiqueAchatsRepository = historiqueAchatsRepository;
-	    }
+    @Autowired
+    private HistoriqueAchatsRepository historiqueAchatsRepository;
 
-	    public List<HistoriqueAchats> getAllHistoriques() {
-	        return historiqueAchatsRepository.findAll();
-	    }
+    public List<HistoriqueAchats> getAllHistoriques() {
+        return historiqueAchatsRepository.findAll();
+    }
 
-	    public Optional<HistoriqueAchats> getHistoriqueById(Long id) {
-	        return historiqueAchatsRepository.findById(id);
-	    }
+    public Optional<HistoriqueAchats> getHistoriqueById(Long id) {
+        return historiqueAchatsRepository.findById(id);
+    }
 
-	    public HistoriqueAchats saveHistorique(HistoriqueAchats historiqueAchats) {
-	        return historiqueAchatsRepository.save(historiqueAchats);
-	    }
+    public HistoriqueAchats saveHistorique(HistoriqueAchats historiqueAchats) {
+        return historiqueAchatsRepository.save(historiqueAchats);
+    }
 
-	    public HistoriqueAchats updateHistorique(Long id, HistoriqueAchats historiqueDetails) {
-	        HistoriqueAchats historique = historiqueAchatsRepository.findById(id).orElse(null);
+    public HistoriqueAchats updateHistorique(Long id, HistoriqueAchats historiqueDetails) {
+        HistoriqueAchats historique = historiqueAchatsRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Historique non trouvé")
+        );
 
-	        if (historique != null) {
-	            historique.setFournisseur(historiqueDetails.getFournisseur());
-	            historique.setProduit(historiqueDetails.getProduit());
-	            historique.setQuantite(historiqueDetails.getQuantite());
-	            historique.setDelaiLivraison(historiqueDetails.getDelaiLivraison());
+        historique.setFournisseur(historiqueDetails.getFournisseur());
+        historique.setProduit(historiqueDetails.getProduit());
+        historique.setQuantite(historiqueDetails.getQuantite());
+        historique.setDelaiLivraison(historiqueDetails.getDelaiLivraison());
 
-	            return historiqueAchatsRepository.save(historique);
-	        }
+        return historiqueAchatsRepository.save(historique);
+    }
 
-	        return null;
-	    }
+    public void deleteHistorique(Long id) {
+        if (!historiqueAchatsRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Historique non trouvé");
+        }
 
-	    public void deleteHistorique(Long id) {
-	        historiqueAchatsRepository.deleteById(id);
-	    }
-	    public List<HistoriqueAchats> comparerOffresParProduit(String produit) {
-	        return historiqueAchatsRepository.findByProduit(produit);
-	    }
+        historiqueAchatsRepository.deleteById(id);
+    }
 
+    public List<HistoriqueAchats> comparerOffresParProduit(String produit) {
+        return historiqueAchatsRepository.findByProduit(produit);
+    }
 }

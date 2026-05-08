@@ -3,51 +3,54 @@ package com.gestionAchatfournisseur.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.gestionAchatfournisseur.entity.CommandeAchat;
 import com.gestionAchatfournisseur.repo.CommandeAchatRepository;
 
 @Service
 public class CommandeAchatService {
-	 private final CommandeAchatRepository commandeAchatRepository;
 
-	    public CommandeAchatService(CommandeAchatRepository commandeAchatRepository) {
-	        this.commandeAchatRepository = commandeAchatRepository;
-	    }
+    @Autowired
+    private CommandeAchatRepository commandeAchatRepository;
 
-	    public List<CommandeAchat> getAllCommandes() {
-	        return commandeAchatRepository.findAll();
-	    }
+    public List<CommandeAchat> getAllCommandes() {
+        return commandeAchatRepository.findAll();
+    }
 
-	    public Optional<CommandeAchat> getCommandeById(Long id) {
-	        return commandeAchatRepository.findById(id);
-	    }
+    public Optional<CommandeAchat> getCommandeById(Long id) {
+        return commandeAchatRepository.findById(id);
+    }
 
-	    public CommandeAchat saveCommande(CommandeAchat commandeAchat) {
-	        return commandeAchatRepository.save(commandeAchat);
-	    }
+    public CommandeAchat saveCommande(CommandeAchat commandeAchat) {
+        return commandeAchatRepository.save(commandeAchat);
+    }
 
-	    public CommandeAchat updateCommande(Long id, CommandeAchat commandeDetails) {
-	        CommandeAchat commande = commandeAchatRepository.findById(id).orElse(null);
+    public CommandeAchat updateCommande(Long id, CommandeAchat commandeDetails) {
+        CommandeAchat commande = commandeAchatRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Commande non trouvée")
+        );
 
-	        if (commande != null) {
-	            commande.setFournisseur(commandeDetails.getFournisseur());
-	            commande.setDate(commandeDetails.getDate());
-	            commande.setStatut(commandeDetails.getStatut());
-	            commande.setMontant(commandeDetails.getMontant());
+        commande.setFournisseur(commandeDetails.getFournisseur());
+        commande.setDate(commandeDetails.getDate());
+        commande.setStatut(commandeDetails.getStatut());
+        commande.setMontant(commandeDetails.getMontant());
 
-	            return commandeAchatRepository.save(commande);
-	        }
+        return commandeAchatRepository.save(commande);
+    }
 
-	        return null;
-	    }
+    public void deleteCommande(Long id) {
+        if (!commandeAchatRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Commande non trouvée");
+        }
 
-	    public void deleteCommande(Long id) {
-	        commandeAchatRepository.deleteById(id);
-	    }
-	    public List<CommandeAchat> getCommandesByFournisseurId(Long fournisseurId) {
-	        return commandeAchatRepository.findByFournisseurId(fournisseurId);
-	    }
+        commandeAchatRepository.deleteById(id);
+    }
 
+    public List<CommandeAchat> getCommandesByFournisseurId(Long fournisseurId) {
+        return commandeAchatRepository.findByFournisseurId(fournisseurId);
+    }
 }
