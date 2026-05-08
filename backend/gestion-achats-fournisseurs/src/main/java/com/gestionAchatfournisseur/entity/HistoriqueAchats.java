@@ -10,81 +10,32 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class HistoriqueAchats {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	 @ManyToOne
-	    @JoinColumn(name = "fournisseur_id")
-	    @NotNull(message = "Le fournisseur est obligatoire")
-	    private Fournisseur fournisseur;
 
-	    @NotBlank(message = "Le produit est obligatoire")
-	    private String produit;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	    @NotNull(message = "La quantité est obligatoire")
-	    private Integer quantite;
+    @ManyToOne
+    @JoinColumn(name = "fournisseur_id")
+    @NotNull(message = "Le fournisseur est obligatoire")
+    private Fournisseur fournisseur;
 
-	    @NotNull(message = "Le délai de livraison est obligatoire")
-	    private Integer delaiLivraison;
+    @NotBlank(message = "Le produit est obligatoire")
+    private String produit;
 
-	    public HistoriqueAchats() {
-	    }
+    @NotNull(message = "La quantité est obligatoire")
+    private Integer quantite;
 
-		public HistoriqueAchats(long id, @NotNull(message = "Le fournisseur est obligatoire") Fournisseur fournisseur,
-				@NotBlank(message = "Le produit est obligatoire") String produit,
-				@NotNull(message = "La quantité est obligatoire") Integer quantite,
-				@NotNull(message = "Le délai de livraison est obligatoire") Integer delaiLivraison) {
-			super();
-			this.id = id;
-			this.fournisseur = fournisseur;
-			this.produit = produit;
-			this.quantite = quantite;
-			this.delaiLivraison = delaiLivraison;
-		}
-
-		public Long getId() {
-    		return id;
-		}
-
-		public void setId(Long id) {
-    		this.id = id;
-		}
-
-		public Fournisseur getFournisseur() {
-			return fournisseur;
-		}
-
-		public void setFournisseur(Fournisseur fournisseur) {
-			this.fournisseur = fournisseur;
-		}
-
-		public String getProduit() {
-			return produit;
-		}
-
-		public void setProduit(String produit) {
-			this.produit = produit;
-		}
-
-		public Integer getQuantite() {
-			return quantite;
-		}
-
-		public void setQuantite(Integer quantite) {
-			this.quantite = quantite;
-		}
-
-		public Integer getDelaiLivraison() {
-			return delaiLivraison;
-		}
-
-		public void setDelaiLivraison(Integer delaiLivraison) {
-			this.delaiLivraison = delaiLivraison;
-		}
-	    
-
+    @NotNull(message = "Le délai de livraison est obligatoire")
+    private Integer delaiLivraison;
 }

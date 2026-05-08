@@ -10,83 +10,32 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class LigneCommandeAchat {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	 @ManyToOne
-	    @JoinColumn(name = "commande_id")
-	    @NotNull(message = "La commande est obligatoire")
-	    private CommandeAchat commande;
 
-	    @NotBlank(message = "Le produit est obligatoire")
-	    private String produit;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	    @NotNull(message = "La quantité est obligatoire")
-	    private Integer quantite;
+    @ManyToOne
+    @JoinColumn(name = "commande_id")
+    @NotNull(message = "La commande est obligatoire")
+    private CommandeAchat commande;
 
-	    @NotNull(message = "Le prix unitaire est obligatoire")
-	    private Double prixUnitaire;
+    @NotBlank(message = "Le produit est obligatoire")
+    private String produit;
 
-	    public LigneCommandeAchat() {
-	    }
+    @NotNull(message = "La quantité est obligatoire")
+    private Integer quantite;
 
-		public LigneCommandeAchat(long id, @NotNull(message = "La commande est obligatoire") CommandeAchat commande,
-				@NotBlank(message = "Le produit est obligatoire") String produit,
-				@NotNull(message = "La quantité est obligatoire") Integer quantite,
-				@NotNull(message = "Le prix unitaire est obligatoire") Double prixUnitaire) {
-			super();
-			this.id = id;
-			this.commande = commande;
-			this.produit = produit;
-			this.quantite = quantite;
-			this.prixUnitaire = prixUnitaire;
-		}
-
-		public Long getId() {
-    		return id;
-		}
-
-		public void setId(Long id) {
-    		this.id = id;
-		}
-
-		public CommandeAchat getCommande() {
-			return commande;
-		}
-
-		public void setCommande(CommandeAchat commande) {
-			this.commande = commande;
-		}
-
-		public String getProduit() {
-			return produit;
-		}
-
-		public void setProduit(String produit) {
-			this.produit = produit;
-		}
-
-		public Integer getQuantite() {
-			return quantite;
-		}
-
-		public void setQuantite(Integer quantite) {
-			this.quantite = quantite;
-		}
-
-		public Double getPrixUnitaire() {
-			return prixUnitaire;
-		}
-
-		public void setPrixUnitaire(Double prixUnitaire) {
-			this.prixUnitaire = prixUnitaire;
-		}
-	    
-
-	
-	
-	
+    @NotNull(message = "Le prix unitaire est obligatoire")
+    private Double prixUnitaire;
 }
