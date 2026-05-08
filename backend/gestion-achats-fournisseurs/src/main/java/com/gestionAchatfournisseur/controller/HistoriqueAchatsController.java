@@ -14,70 +14,65 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gestionAchatfournisseur.entity.HistoriqueAchats;
-import com.gestionAchatfournisseur.service.HistoriqueAchatsService;
 import com.gestionAchatfournisseur.dto.HistoriqueAchatsRequest;
 import com.gestionAchatfournisseur.entity.Fournisseur;
+import com.gestionAchatfournisseur.entity.HistoriqueAchats;
+import com.gestionAchatfournisseur.service.HistoriqueAchatsService;
 
-import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/historiques")
 @CrossOrigin("*")
-
 public class HistoriqueAchatsController {
-@Autowired
 
-private final HistoriqueAchatsService historiqueAchatsService;
+    @Autowired
+    private HistoriqueAchatsService historiqueAchatsService;
 
-public HistoriqueAchatsController(HistoriqueAchatsService historiqueAchatsService) {
-    this.historiqueAchatsService = historiqueAchatsService;
-}
+    @GetMapping
+    public List<HistoriqueAchats> getAllHistoriques() {
+        return historiqueAchatsService.getAllHistoriques();
+    }
 
-@GetMapping
-public List<HistoriqueAchats> getAllHistoriques() {
-    return historiqueAchatsService.getAllHistoriques();
-}
+    @GetMapping("/{id}")
+    public Optional<HistoriqueAchats> getHistoriqueById(@PathVariable("id") Long id) {
+        return historiqueAchatsService.getHistoriqueById(id);
+    }
 
-@GetMapping("/{id}")
-public Optional<HistoriqueAchats> getHistoriqueById(@PathVariable("id") Long id) {
-    return historiqueAchatsService.getHistoriqueById(id);
-}
+    @PostMapping
+    public HistoriqueAchats createHistorique(@RequestBody HistoriqueAchatsRequest request) {
+        Fournisseur fournisseur = new Fournisseur();
+        fournisseur.setId(request.getFournisseurId());
 
-@PostMapping
-public HistoriqueAchats createHistorique(@RequestBody HistoriqueAchatsRequest request) {
-    Fournisseur f = new Fournisseur();
-    f.setId(request.getFournisseurId());
+        HistoriqueAchats historique = new HistoriqueAchats();
+        historique.setFournisseur(fournisseur);
+        historique.setProduit(request.getProduit());
+        historique.setQuantite(request.getQuantite());
+        historique.setDelaiLivraison(request.getDelaiLivraison());
 
-    HistoriqueAchats h = new HistoriqueAchats();
-    h.setFournisseur(f);
-    h.setProduit(request.getProduit());
-    h.setQuantite(request.getQuantite());
-    h.setDelaiLivraison(request.getDelaiLivraison());
+        return historiqueAchatsService.saveHistorique(historique);
+    }
 
-    return historiqueAchatsService.saveHistorique(h);
-}
+    @PutMapping("/{id}")
+    public HistoriqueAchats updateHistorique(@PathVariable("id") Long id, @RequestBody HistoriqueAchatsRequest request) {
+        Fournisseur fournisseur = new Fournisseur();
+        fournisseur.setId(request.getFournisseurId());
 
-@PutMapping("/{id}")
-public HistoriqueAchats updateHistorique(@PathVariable Long id,
-                                         @RequestBody HistoriqueAchatsRequest request) {
-    Fournisseur f = new Fournisseur();
-    f.setId(request.getFournisseurId());
+        HistoriqueAchats historique = new HistoriqueAchats();
+        historique.setId(id);
+        historique.setFournisseur(fournisseur);
+        historique.setProduit(request.getProduit());
+        historique.setQuantite(request.getQuantite());
+        historique.setDelaiLivraison(request.getDelaiLivraison());
 
-    HistoriqueAchats h = new HistoriqueAchats();
-    h.setId(id);
-    h.setFournisseur(f);
-    h.setProduit(request.getProduit());
-    h.setQuantite(request.getQuantite());
-    h.setDelaiLivraison(request.getDelaiLivraison());
+        return historiqueAchatsService.updateHistorique(id, historique);
+    }
 
-    return historiqueAchatsService.updateHistorique(id, h);
-}
-@DeleteMapping("/{id}")
-public void deleteHistorique(@PathVariable("id") Long id) {
-    historiqueAchatsService.deleteHistorique(id);
-}
-@GetMapping("/comparaison/{produit}")
-public List<HistoriqueAchats> comparerOffresParProduit(@PathVariable("produit") String produit) {
-    return historiqueAchatsService.comparerOffresParProduit(produit);
-}
+    @DeleteMapping("/{id}")
+    public void deleteHistorique(@PathVariable("id") Long id) {
+        historiqueAchatsService.deleteHistorique(id);
+    }
+
+    @GetMapping("/comparaison/{produit}")
+    public List<HistoriqueAchats> comparerOffresParProduit(@PathVariable("produit") String produit) {
+        return historiqueAchatsService.comparerOffresParProduit(produit);
+    }
 }

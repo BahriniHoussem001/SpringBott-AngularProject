@@ -1,7 +1,6 @@
 package com.gestionAchatfournisseur.controller;
 
 import java.util.List;
-import com.gestionAchatfournisseur.entity.EvaluationFournisseur;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gestionAchatfournisseur.entity.EvaluationFournisseur;
 import com.gestionAchatfournisseur.entity.Fournisseur;
 import com.gestionAchatfournisseur.service.FournisseurService;
 
@@ -24,40 +24,37 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/fournisseurs")
 @CrossOrigin("*")
 public class FournisseurController {
-	@Autowired
-	 private final FournisseurService fournisseurService;
 
-	    public FournisseurController(FournisseurService fournisseurService) {
-	        this.fournisseurService = fournisseurService;
-	    }
+    @Autowired
+    private FournisseurService fournisseurService;
 
-	    @GetMapping
-	    public List<Fournisseur> getAllFournisseurs() {
-	        return fournisseurService.getAllFournisseurs();
-	    }
+    @GetMapping
+    public List<Fournisseur> getAllFournisseurs() {
+        return fournisseurService.getAllFournisseurs();
+    }
 
-	    @GetMapping("/{id}")
-	    public Optional<Fournisseur> getFournisseurById(@PathVariable("id") Long id) {
-	        return fournisseurService.getFournisseurById(id);
-	    }
+    @GetMapping("/{id}")
+    public Optional<Fournisseur> getFournisseurById(@PathVariable("id") Long id) {
+        return fournisseurService.getFournisseurById(id);
+    }
 
-	    @PostMapping
-	    public Fournisseur createFournisseur(@Valid @RequestBody Fournisseur fournisseur) {
-	        return fournisseurService.saveFournisseur(fournisseur);
-	    }
+    @PostMapping
+    public Fournisseur createFournisseur(@Valid @RequestBody Fournisseur fournisseur) {
+        return fournisseurService.saveFournisseur(fournisseur);
+    }
 
-	    @PutMapping("/{id}")
-	    public Fournisseur updateFournisseur(@PathVariable("id") Long id, @Valid @RequestBody Fournisseur fournisseur) {
-	        return fournisseurService.updateFournisseur(id, fournisseur);
-	    }
+    @PutMapping("/{id}")
+    public Fournisseur updateFournisseur(@PathVariable("id") Long id, @Valid @RequestBody Fournisseur fournisseur) {
+        return fournisseurService.updateFournisseur(id, fournisseur);
+    }
 
-	    @DeleteMapping("/{id}")
-	    public void deleteFournisseur(@PathVariable("id") Long id) {
-	        fournisseurService.deleteFournisseur(id);
-	    }
-	    @GetMapping("/evaluation")
-	    public List<EvaluationFournisseur> evaluerFournisseurs() {
-	        return fournisseurService.evaluerFournisseurs();
-	    }
+    @DeleteMapping("/{id}")
+    public void deleteFournisseur(@PathVariable("id") Long id) {
+        fournisseurService.deleteFournisseur(id);
+    }
 
+    @GetMapping("/evaluation")
+    public List<EvaluationFournisseur> evaluerFournisseurs() {
+        return fournisseurService.evaluerFournisseurs();
+    }
 }
